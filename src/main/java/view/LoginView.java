@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -20,6 +22,12 @@ public class LoginView {
         layout.setBorder(new Border(new BorderStroke(
                 Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(10))));
 
+        Image duckphone = new Image(getClass().getResourceAsStream("/images/duckphone.png"));
+        ImageView duckphoneView = new ImageView(duckphone);
+        duckphoneView.setFitHeight(100);
+        duckphoneView.setPreserveRatio(true);
+        //duckphoneView.setTranslateY(100);
+
         Label title = new Label("Вход в систему");
         title.setFont(Font.font("Comic Sans MS", 22));
         title.setTextFill(Color.BLACK);
@@ -34,14 +42,7 @@ public class LoginView {
         Button loginButton = createGreenButton("Войти");
         Button backButton = createRedButton("Назад");
 
-        layout.getChildren().addAll(
-                title,
-                createLabeledField("Логин:", loginField),
-                createLabeledField("Пароль:", passwordField),
-                errorLabel,
-                loginButton,
-                backButton
-        );
+        layout.getChildren().addAll(duckphoneView, title, createLabeledField("Логин:", loginField), createLabeledField("Пароль:", passwordField), errorLabel, loginButton, backButton);
 
         controller.attachHandlers(loginButton, backButton, loginField, passwordField, errorLabel);
     }

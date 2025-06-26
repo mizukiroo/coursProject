@@ -38,9 +38,9 @@ public class RegisterView {
 
         Label errorLabel = new Label();
         errorLabel.setTextFill(Color.RED);
-        errorLabel.setStyle("-fx-font-size: 14px;");
+        errorLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS';");
 
-        //Поля формы
+        // Поля формы
         TextField orgField = createTextField("Введите название организации");
         TextField addressField = createTextField("Введите адрес");
         TextField phoneField = createTextField("Введите телефон");
@@ -50,11 +50,10 @@ public class RegisterView {
         PasswordField passwordField = createPasswordField("Придумайте пароль");
         PasswordField confirmField = createPasswordField("Повторите пароль");
 
-        //Кнопки
+        // Кнопки
         Button registerButton = createGreenButton("Зарегистрироваться");
         Button backButton = createRedButton("Назад");
 
-        //Добавляем поля с подписями
         layout.getChildren().addAll(
                 title,
                 createLabeledField("Название организации:", orgField),
@@ -70,7 +69,6 @@ public class RegisterView {
                 backButton
         );
 
-        //Передача всех полей в контроллер
         controller.attachHandlers(
                 registerButton,
                 backButton,
@@ -94,50 +92,58 @@ public class RegisterView {
     private TextField createTextField(String prompt) {
         TextField tf = new TextField();
         tf.setPromptText(prompt);
-        tf.setStyle("-fx-font-size: 14px; -fx-pref-width: 300px;");
+        tf.setStyle("""
+            -fx-font-size: 14px;
+            -fx-pref-width: 300px;
+            -fx-font-family: 'Comic Sans MS';
+        """);
         return tf;
     }
 
     private PasswordField createPasswordField(String prompt) {
         PasswordField pf = new PasswordField();
         pf.setPromptText(prompt);
-        pf.setStyle("-fx-font-size: 14px; -fx-pref-width: 300px;");
+        pf.setStyle("""
+            -fx-font-size: 14px;
+            -fx-pref-width: 300px;
+            -fx-font-family: 'Comic Sans MS';
+        """);
         return pf;
     }
 
     private Button createGreenButton(String text) {
         Button btn = new Button(text);
         btn.setStyle("""
-        -fx-font-family: "Comic Sans MS";
-        -fx-font-size: 18px;
-        -fx-min-width: 200px;
-        -fx-min-height: 40px;
-        -fx-background-color: #6EBF8B;
-        -fx-text-fill: white;
-        -fx-background-radius: 999px;
-        -fx-border-radius: 999px;
-    """);
+            -fx-font-family: "Comic Sans MS";
+            -fx-font-size: 18px;
+            -fx-min-width: 200px;
+            -fx-min-height: 40px;
+            -fx-background-color: #6EBF8B;
+            -fx-text-fill: white;
+            -fx-background-radius: 999px;
+            -fx-border-radius: 999px;
+        """);
         return btn;
     }
 
     private Button createRedButton(String text) {
         Button btn = new Button(text);
         btn.setStyle("""
-        -fx-font-family: "Comic Sans MS";
-        -fx-font-size: 18px;
-        -fx-min-width: 200px;
-        -fx-min-height: 40px;
-        -fx-background-color: #FF7F7F;
-        -fx-text-fill: white;
-        -fx-background-radius: 999px;
-        -fx-border-radius: 999px;
-    """);
+            -fx-font-family: "Comic Sans MS";
+            -fx-font-size: 18px;
+            -fx-min-width: 200px;
+            -fx-min-height: 40px;
+            -fx-background-color: #FF7F7F;
+            -fx-text-fill: white;
+            -fx-background-radius: 999px;
+            -fx-border-radius: 999px;
+        """);
         return btn;
     }
 
     private VBox createLabeledField(String labelText, Control input) {
         Label label = new Label(labelText);
-        label.setFont(Font.font("Arial", 16));
+        label.setFont(Font.font("Comic Sans MS", 16));
         VBox box = new VBox(5, label, input);
         box.setAlignment(Pos.CENTER_LEFT);
         return box;

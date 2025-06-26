@@ -3,57 +3,64 @@ package view;
 import controller.AdminPanelController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class AdminPanelView {
+    private final VBox layout;
     private final Scene scene;
 
     public AdminPanelView(Stage stage, String username, MainView mainView) {
-        VBox layout = createMainLayout();
-        Label title = createTitleLabel();
+        layout = new VBox(15);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(30));
+        layout.setBackground(new Background(new BackgroundFill(Color.web("#FFFACD"), new CornerRadii(10), Insets.EMPTY)));
+        layout.setBorder(new Border(new BorderStroke(
+                Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(10))));
+
+        Image duckphone = new Image(getClass().getResourceAsStream("/images/duckphone.png"));
+        ImageView duckphoneView = new ImageView(duckphone);
+        duckphoneView.setFitHeight(100);
+        duckphoneView.setPreserveRatio(true);
+
+        Label title = new Label("Панель администратора");
+        title.setFont(Font.font("Comic Sans MS", 22));
+        title.setTextFill(Color.BLACK);
 
         Button addPointButton = createGreenButton("Добавить торговую точку");
         Button viewContractsButton = createGreenButton("Посмотреть договоры");
         Button backButton = createRedButton("Назад");
 
-        layout.getChildren().addAll(title, addPointButton, viewContractsButton, backButton);
+        layout.getChildren().addAll(
+                duckphoneView,
+                title,
+                addPointButton,
+                viewContractsButton,
+                backButton
+        );
 
         new AdminPanelController(addPointButton, viewContractsButton, backButton, mainView, username);
-
-        this.scene = new Scene(layout, 500, 400);
+        this.scene = new Scene(layout, 500, 500);
     }
 
-    private VBox createMainLayout() {
-        VBox layout = new VBox(20);
-        layout.setPadding(new Insets(40));
-        layout.setAlignment(Pos.CENTER);
-        layout.setBackground(new Background(new BackgroundFill(
-                Color.web("#FFFACD"), CornerRadii.EMPTY, Insets.EMPTY)));
-        layout.setBorder(new Border(new BorderStroke(
-                Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(10))));
-        return layout;
-    }
-
-    private Label createTitleLabel() {
-        Label title = new Label("Панель администратора");
-        title.setStyle("""
-            -fx-font-size: 24px;
-            -fx-font-family: 'Comic Sans MS';
-        """);
-        return title;
+    public Scene getScene() {
+        return scene;
     }
 
     private Button createGreenButton(String text) {
         Button btn = new Button(text);
         btn.setStyle("""
             -fx-font-family: "Comic Sans MS";
-            -fx-font-size: 16px;
-            -fx-min-width: 250px;
+            -fx-font-size: 18px;
+            -fx-min-width: 200px;
             -fx-min-height: 40px;
             -fx-background-color: #6EBF8B;
             -fx-text-fill: white;
@@ -67,8 +74,8 @@ public class AdminPanelView {
         Button btn = new Button(text);
         btn.setStyle("""
             -fx-font-family: "Comic Sans MS";
-            -fx-font-size: 16px;
-            -fx-min-width: 250px;
+            -fx-font-size: 18px;
+            -fx-min-width: 200px;
             -fx-min-height: 40px;
             -fx-background-color: #FF7F7F;
             -fx-text-fill: white;
@@ -78,7 +85,8 @@ public class AdminPanelView {
         return btn;
     }
 
-    public Scene getScene() {
-        return scene;
+    public Parent getView() {
+        return layout;
     }
 }
+
