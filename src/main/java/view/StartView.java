@@ -45,7 +45,7 @@ public class StartView {
         ImageView bushView = new ImageView(bush);
         bushView.setFitHeight(400);
         bushView.setPreserveRatio(true);
-        bushView.setTranslateY(-200); // поднимет на 10px вверх
+        bushView.setTranslateY(-200);
 
 
         layout.getChildren().addAll(logoView, title, loginButton, registerButton, spacer, bushView);
