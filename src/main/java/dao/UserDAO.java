@@ -10,21 +10,6 @@ public class UserDAO {
         this.connection = connection;
     }
 
-    //Регистрация без client_id
-    public boolean registerUser(String login, String passwordHash, String role) {
-        String sql = "INSERT INTO users (login, password_u, role) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, login);
-            stmt.setString(2, passwordHash);
-            stmt.setString(3, role);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Ошибка регистрации: " + e.getMessage());
-            return false;
-        }
-    }
-
     //Регистрация с привязкой к client_id
     public boolean insertUser(String login, String passwordHash, String role, int clientId) {
         String sql = "INSERT INTO users (login, password_u, role, client_id) VALUES (?, ?, ?, ?)";
