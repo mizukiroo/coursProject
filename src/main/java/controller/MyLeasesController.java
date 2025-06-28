@@ -1,49 +1,67 @@
 package controller;
 
-import dao.MyLeaseDAO;
+import dao.ContractDAO;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import model.Contract;
 import model.Database;
-import model.MyLease;
 import view.MainView;
 
 import java.util.List;
 
 public class MyLeasesController {
-    private final String username;
-    private final VBox leaseListBox;
+    private final VBox container;
     private final Button backButton;
     private final MainView mainView;
+    private final String username;
 
-    public MyLeasesController(String username, VBox leaseListBox, Button backButton, MainView mainView) {
+    public MyLeasesController(String username, VBox container, Button backButton, MainView mainView) {
         this.username = username;
-        this.leaseListBox = leaseListBox;
+        this.container = container;
         this.backButton = backButton;
         this.mainView = mainView;
 
-        backButton.setOnAction(e -> mainView.showSuccessView(username, "client"));
-        loadLeases();
+        loadContracts();
+        backButton.setOnAction(new BackHandler());
     }
 
-    private void loadLeases() {
-        MyLeaseDAO dao = new MyLeaseDAO(Database.getInstance().getConnection());
-        List<MyLease> leases = dao.getLeasesByUsername(username);
+    private void loadContracts() {
+        ContractDAO contractDAO = new ContractDAO(Database.getInstance().getConnection());
+        List<Contract> contracts = contractDAO.getContractsByUsername(username);
 
-        leaseListBox.getChildren().clear();
-        if (leases.isEmpty()) {
-            leaseListBox.getChildren().add(new Label("Нет аренд"));
-            return;
-        }
-
-        for (MyLease lease : leases) {
-            Label label = new Label(
-                    String.format("С %s по %s | Этаж: %d | Площадь: %.2f м² | Сумма: %.2f руб.",
-                            lease.getStartDate(), lease.getEndDate(),
-                            lease.getFloor(), lease.getArea(), lease.getTotalCost())
+        for (Contract contract : contracts) {
+            String info = String.format("""
+                    Договор №%d
+                    Дата начала: %s
+                    Дата окончания: %s
+                    Точка №%d (этаж: %d, площадь: %.2f м², кондиционер: %s)
+                    Цена: %.2f₽/день
+                    -----------------------------
+                    """,
+                    contract.getId(),
+                    contract.getStartDate(),
+                    contract.getEndDate(),
+                    contract.getPointId(),
+                    contract.getFloor(),
+                    contract.getArea(),
+                    contract.isAirConditioner() ? "Да" : "Нет",
+                    contract.getRent()
             );
-            label.setStyle("-fx-font-size: 16px;");
-            leaseListBox.getChildren().add(label);
+
+            Label label = new Label(info);
+            label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;");
+            container.getChildren().add(label);
+        }
+    }
+
+    private class BackHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            mainView.showSuccessView(username, "client");
         }
     }
 }
+

@@ -5,10 +5,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -34,8 +32,8 @@ public class MyLeasesView {
         ScrollPane scrollPane = new ScrollPane(leaseListBox);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background: white; -fx-border-color: #F4D03F;");
-        scrollPane.setPrefHeight(350); // задаёт большую высоту
-        VBox.setVgrow(scrollPane, Priority.ALWAYS); // ⬅️ позволяет ScrollPane расширяться вниз
+        scrollPane.setPrefHeight(380);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
         Button backButton = new Button("Назад");
         backButton.setStyle("""
@@ -50,8 +48,6 @@ public class MyLeasesView {
         """);
 
         root.getChildren().addAll(title, scrollPane, backButton);
-
-        // Контроллер
         new MyLeasesController(username, leaseListBox, backButton, mainView);
 
         this.scene = new Scene(root, 650, 550);
@@ -61,4 +57,5 @@ public class MyLeasesView {
         return scene;
     }
 }
+
 
