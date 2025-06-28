@@ -38,29 +38,6 @@ public class TradePointDAO {
         return points;
     }
 
-    public TradePoint getById(int id) {
-        String sql = "SELECT * FROM trade_points WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return new TradePoint(
-                        rs.getInt("id"),
-                        rs.getInt("floor"),
-                        rs.getDouble("area"),
-                        rs.getBoolean("air_conditioner"),
-                        rs.getDouble("daily_rent")
-                );
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Ошибка при получении точки по ID: " + e.getMessage());
-        }
-
-        return null;
-    }
-
     public boolean addTradePoint(int floor, double area, boolean airConditioner, double dailyRent) {
         String sql = "INSERT INTO trade_points (floor, area, air_conditioner, daily_rent) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -73,18 +50,6 @@ public class TradePointDAO {
             return affected > 0;
         } catch (SQLException e) {
             System.out.println("Ошибка при добавлении точки: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean deleteById(int id) {
-        String sql = "DELETE FROM trade_points WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            int affected = stmt.executeUpdate();
-            return affected > 0;
-        } catch (SQLException e) {
-            System.out.println("Ошибка при удалении точки: " + e.getMessage());
             return false;
         }
     }

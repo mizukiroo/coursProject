@@ -12,7 +12,6 @@ public class TradePoint {
     private double dailyRent;
     private int contractId;
 
-    // 🔹 Конструктор с contractId (используется при загрузке договоров)
     public TradePoint(int id, int floor, double area, boolean airConditioner, double dailyRent, int contractId) {
         this.id = id;
         this.floor = floor;
@@ -22,7 +21,6 @@ public class TradePoint {
         this.contractId = contractId;
     }
 
-    // 🔹 Конструктор без contractId (для обычной загрузки точек)
     public TradePoint(int id, int floor, double area, boolean airConditioner, double dailyRent) {
         this(id, floor, area, airConditioner, dailyRent, -1); // -1 означает "нет договора"
     }
