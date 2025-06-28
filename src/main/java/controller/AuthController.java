@@ -16,10 +16,6 @@ public class AuthController {
 
     }
 
-    public boolean register(String username, String password, String role) {
-        return userDAO.registerUser(username, password, role);
-    }
-
     public User login(String username, String password) {
         return userDAO.authenticate(username, password);
     }
@@ -31,11 +27,9 @@ public class AuthController {
             return false;
         }
 
-        // Сначала создаём клиента
         int clientId = clientDAO.insertClient(orgName, address, phone, requisites, contact);
         if (clientId == -1) return false;
 
-        // Потом создаём пользователя и связываем с клиентом
         return userDAO.insertUser(login, password, role, clientId);
     }
 }
