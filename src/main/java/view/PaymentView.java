@@ -1,7 +1,6 @@
 package view;
 
-import dao.ContractDAO;
-import dao.PaymentDAO;
+import controller.PaymentController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,11 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.Database;
 import model.TradePoint;
-
-import java.time.LocalDate;
-import java.util.List;
 
 public class PaymentView {
     private final Scene scene;
@@ -28,44 +23,30 @@ public class PaymentView {
         title.setStyle("-fx-font-size: 22px; -fx-font-family: 'Comic Sans MS';");
 
         ComboBox<TradePoint> pointBox = new ComboBox<>();
-        pointBox.setStyle("-fx-font-size: 14px;");
-        ContractDAO contractDAO = new ContractDAO(Database.getInstance().getConnection());
-        List<TradePoint> tradePoints = contractDAO.getContractsByUsername(username);
-        pointBox.getItems().addAll(tradePoints);
+        pointBox.setStyle("-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS';");
+        pointBox.setPromptText("Выберите точку");
 
         TextField amountField = new TextField();
         amountField.setPromptText("Сумма платежа");
+        amountField.setStyle("-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS';");
 
         Label statusLabel = new Label();
+        statusLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS';");
 
         Button payButton = createGreenButton("Внести");
         Button backButton = createRedButton("Назад");
 
-        backButton.setOnAction(e -> mainView.showProfileView(username));
-
-        payButton.setOnAction(e -> {
-            TradePoint selected = pointBox.getValue();
-            if (selected == null) {
-                statusLabel.setText("Выберите точку.");
-                statusLabel.setTextFill(Color.RED);
-                return;
-            }
-
-            try {
-                double amount = Double.parseDouble(amountField.getText().trim());
-                PaymentDAO paymentDAO = new PaymentDAO(Database.getInstance().getConnection());
-                int contractId = selected.getContractId();
-                int pointId = selected.getId();
-
-                boolean ok = paymentDAO.insertPayment(contractId, pointId, LocalDate.now(), amount);
-
-                statusLabel.setText(ok ? "Платёж внесён!" : "Ошибка внесения платежа.");
-                statusLabel.setTextFill(ok ? Color.GREEN : Color.RED);
-            } catch (Exception ex) {
-                statusLabel.setText("Некорректная сумма.");
-                statusLabel.setTextFill(Color.RED);
-            }
-        });
+        // ⬇ Классический контроллер с внутренними слушателями
+        PaymentController controller = new PaymentController(
+                pointBox,
+                amountField,
+                statusLabel,
+                payButton,
+                backButton,
+                layout,
+                username,
+                mainView
+        );
 
         layout.getChildren().addAll(title, pointBox, amountField, statusLabel, payButton, backButton);
         this.scene = new Scene(layout, 500, 400);
@@ -105,4 +86,5 @@ public class PaymentView {
         return btn;
     }
 }
+
 
