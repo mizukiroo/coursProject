@@ -37,17 +37,13 @@ public class AdminPanelView {
 
         Button addPointButton = createGreenButton("Добавить торговую точку");
         Button viewContractsButton = createGreenButton("Посмотреть договоры");
+        Button paymentsButton = createGreenButton("Все платежи");
         Button backButton = createRedButton("Назад");
 
-        layout.getChildren().addAll(
-                duckphoneView,
-                title,
-                addPointButton,
-                viewContractsButton,
-                backButton
-        );
+        layout.getChildren().addAll(duckphoneView, title, addPointButton, viewContractsButton, paymentsButton, backButton);
 
-        new AdminPanelController(addPointButton, viewContractsButton, backButton, mainView, username);
+
+        new AdminPanelController(addPointButton, viewContractsButton, paymentsButton, backButton, mainView, username);
         this.scene = new Scene(layout, 500, 500);
     }
 
