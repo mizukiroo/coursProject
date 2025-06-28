@@ -6,45 +6,91 @@ import javafx.scene.control.Button;
 import view.MainView;
 
 public class SuccessController {
-    private final MainView mainView;
-    private final String username;
 
     public SuccessController(MainView mainView, String username,
-                             Button profileButton, Button leaseButton, Button myLeasesButton, Button logoutButton) {
-        this.mainView = mainView;
-        this.username = username;
+                             Button profileButton,
+                             Button leaseButton,
+                             Button myLeasesButton,
+                             Button paymentButton,
+                             Button logoutButton) {
 
-        profileButton.setOnAction(new ProfileButtonHandler());
-        leaseButton.setOnAction(new LeaseButtonHandler());
-        myLeasesButton.setOnAction(new MyLeasesButtonHandler());
-        logoutButton.setOnAction(new LogoutButtonHandler());
+        profileButton.setOnAction(new ProfileHandler(mainView, username));
+        leaseButton.setOnAction(new LeaseHandler(mainView, username));
+        myLeasesButton.setOnAction(new MyLeasesHandler(mainView, username));
+        paymentButton.setOnAction(new PaymentHandler(mainView, username));
+        logoutButton.setOnAction(new LogoutHandler(mainView));
     }
 
-    private class ProfileButtonHandler implements EventHandler<ActionEvent> {
+    private static class ProfileHandler implements EventHandler<ActionEvent> {
+        private final MainView mainView;
+        private final String username;
+
+        public ProfileHandler(MainView mainView, String username) {
+            this.mainView = mainView;
+            this.username = username;
+        }
+
         @Override
         public void handle(ActionEvent event) {
             mainView.showProfileView(username);
         }
     }
 
-    private class LeaseButtonHandler implements EventHandler<ActionEvent> {
+    private static class LeaseHandler implements EventHandler<ActionEvent> {
+        private final MainView mainView;
+        private final String username;
+
+        public LeaseHandler(MainView mainView, String username) {
+            this.mainView = mainView;
+            this.username = username;
+        }
+
         @Override
         public void handle(ActionEvent event) {
             mainView.showLeaseView(username);
         }
     }
 
-    private class MyLeasesButtonHandler implements EventHandler<ActionEvent> {
+    private static class MyLeasesHandler implements EventHandler<ActionEvent> {
+        private final MainView mainView;
+        private final String username;
+
+        public MyLeasesHandler(MainView mainView, String username) {
+            this.mainView = mainView;
+            this.username = username;
+        }
+
         @Override
         public void handle(ActionEvent event) {
             mainView.showMyLeasesView(username);
         }
     }
 
-    private class LogoutButtonHandler implements EventHandler<ActionEvent> {
+    private static class PaymentHandler implements EventHandler<ActionEvent> {
+        private final MainView mainView;
+        private final String username;
+
+        public PaymentHandler(MainView mainView, String username) {
+            this.mainView = mainView;
+            this.username = username;
+        }
+
         @Override
         public void handle(ActionEvent event) {
-            mainView.showStartView();
+            mainView.showPaymentView(username);
+        }
+    }
+
+    private static class LogoutHandler implements EventHandler<ActionEvent> {
+        private final MainView mainView;
+
+        public LogoutHandler(MainView mainView) {
+            this.mainView = mainView;
+        }
+
+        @Override
+        public void handle(ActionEvent event) {
+            mainView.showLoginView();
         }
     }
 }

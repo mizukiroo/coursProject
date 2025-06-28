@@ -40,6 +40,7 @@ public class SuccessView {
         Button profileButton = createGreenButton("Личный кабинет");
         Button leaseButton = createGreenButton("Оформить аренду");
         Button myLeasesButton = createGreenButton("Мои аренды");
+        Button paymentButton = createGreenButton("Внести платёж");
         Button logoutButton = createRedButton("Выйти");
 
         layout.getChildren().addAll(
@@ -48,10 +49,12 @@ public class SuccessView {
                 profileButton,
                 leaseButton,
                 myLeasesButton,
+                paymentButton,
                 logoutButton
         );
 
-        new SuccessController(mainView, username, profileButton, leaseButton, myLeasesButton, logoutButton);
+
+        new SuccessController(mainView, username, profileButton, leaseButton, myLeasesButton, paymentButton, logoutButton);
 
         return new Scene(layout, 550, 520);
     }
