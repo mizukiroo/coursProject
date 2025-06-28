@@ -1,8 +1,13 @@
 package dao;
 
+import model.Contract;
+import model.Database;
+import model.TradePoint;
+
 import java.sql.*;
 import java.time.LocalDate;
-import model.Database;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContractDAO {
     private final Connection connection;
@@ -15,15 +20,14 @@ public class ContractDAO {
         try {
             connection.setAutoCommit(false);
 
-            // 1. Получаем client_id
-            String clientSql = """
-                    SELECT c.id, c.start_date, c.end_date, tp.floor, tp.area, tp.daily_rent
-                    FROM contracts c
-                    JOIN contract_trade_point ct ON c.id = ct.contract_id
-                    JOIN trade_points tp ON ct.point_id = tp.id
-                    WHERE c.client_id = ?
-                    """;
+            // Получаем client_id по username
             int clientId;
+            String clientSql = """
+                SELECT c.client_id
+                FROM users u
+                JOIN clients c ON u.client_id = c.client_id
+                WHERE u.login = ?
+            """;
             try (PreparedStatement stmt = connection.prepareStatement(clientSql)) {
                 stmt.setString(1, username);
                 ResultSet rs = stmt.executeQuery();
@@ -31,7 +35,7 @@ public class ContractDAO {
                 clientId = rs.getInt("client_id");
             }
 
-            // 2. Вставляем в contracts
+            // Вставляем договор
             int contractId;
             String insertContract = "INSERT INTO contracts (client_id, start_date, end_date) VALUES (?, ?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertContract, Statement.RETURN_GENERATED_KEYS)) {
@@ -45,7 +49,7 @@ public class ContractDAO {
                 contractId = rs.getInt(1);
             }
 
-            // 3. Вставляем в contract_trade_point
+            // Привязываем точку к договору
             String insertLink = "INSERT INTO contract_trade_point (contract_id, point_id) VALUES (?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertLink)) {
                 stmt.setInt(1, contractId);
@@ -70,4 +74,43 @@ public class ContractDAO {
             } catch (SQLException ignored) {}
         }
     }
+
+    public List<Contract> getContractsByUsername(String username) {
+        List<Contract> contracts = new ArrayList<>();
+
+        String sql = """
+        SELECT ct.id AS contract_id, ct.start_date, ct.end_date,
+               tp.id AS point_id, tp.floor, tp.area, tp.air_conditioner, tp.daily_rent
+        FROM users u
+        JOIN clients c ON u.client_id = c.client_id
+        JOIN contracts ct ON c.client_id = ct.client_id
+        JOIN contract_trade_point ctp ON ct.id = ctp.contract_id
+        JOIN trade_points tp ON ctp.point_id = tp.id
+        WHERE u.login = ?
+    """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Contract contract = new Contract(
+                        rs.getInt("contract_id"),
+                        rs.getInt("point_id"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getInt("floor"),
+                        rs.getDouble("area"),
+                        rs.getBoolean("air_conditioner"),
+                        rs.getDouble("daily_rent")
+                );
+                contracts.add(contract);
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка получения договоров пользователя: " + e.getMessage());
+        }
+
+        return contracts;
+    }
+
 }
+
