@@ -26,7 +26,6 @@ public class LoginView {
         ImageView duckphoneView = new ImageView(duckphone);
         duckphoneView.setFitHeight(100);
         duckphoneView.setPreserveRatio(true);
-        //duckphoneView.setTranslateY(100);
 
         Label title = new Label("Вход в систему");
         title.setFont(Font.font("Comic Sans MS", 22));
@@ -34,7 +33,7 @@ public class LoginView {
 
         Label errorLabel = new Label();
         errorLabel.setTextFill(Color.RED);
-        errorLabel.setStyle("-fx-font-size: 14px;");
+        errorLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS';");
 
         TextField loginField = createTextField("Введите логин");
         PasswordField passwordField = createPasswordField("Введите пароль");
@@ -42,7 +41,15 @@ public class LoginView {
         Button loginButton = createGreenButton("Войти");
         Button backButton = createRedButton("Назад");
 
-        layout.getChildren().addAll(duckphoneView, title, createLabeledField("Логин:", loginField), createLabeledField("Пароль:", passwordField), errorLabel, loginButton, backButton);
+        layout.getChildren().addAll(
+                duckphoneView,
+                title,
+                createLabeledField("Логин:", loginField),
+                createLabeledField("Пароль:", passwordField),
+                errorLabel,
+                loginButton,
+                backButton
+        );
 
         controller.attachHandlers(loginButton, backButton, loginField, passwordField, errorLabel);
     }
@@ -54,50 +61,50 @@ public class LoginView {
     private TextField createTextField(String prompt) {
         TextField tf = new TextField();
         tf.setPromptText(prompt);
-        tf.setStyle("-fx-font-size: 14px; -fx-pref-width: 300px;");
+        tf.setStyle("-fx-font-size: 14px; -fx-pref-width: 300px; -fx-font-family: 'Comic Sans MS';");
         return tf;
     }
 
     private PasswordField createPasswordField(String prompt) {
         PasswordField pf = new PasswordField();
         pf.setPromptText(prompt);
-        pf.setStyle("-fx-font-size: 14px; -fx-pref-width: 300px;");
+        pf.setStyle("-fx-font-size: 14px; -fx-pref-width: 300px; -fx-font-family: 'Comic Sans MS';");
         return pf;
     }
 
     private Button createGreenButton(String text) {
         Button btn = new Button(text);
         btn.setStyle("""
-        -fx-font-family: "Comic Sans MS";
-        -fx-font-size: 18px;
-        -fx-min-width: 200px;
-        -fx-min-height: 40px;
-        -fx-background-color: #6EBF8B;
-        -fx-text-fill: white;
-        -fx-background-radius: 999px;
-        -fx-border-radius: 999px;
-    """);
+            -fx-font-family: "Comic Sans MS";
+            -fx-font-size: 18px;
+            -fx-min-width: 200px;
+            -fx-min-height: 40px;
+            -fx-background-color: #6EBF8B;
+            -fx-text-fill: white;
+            -fx-background-radius: 999px;
+            -fx-border-radius: 999px;
+        """);
         return btn;
     }
 
     private Button createRedButton(String text) {
         Button btn = new Button(text);
         btn.setStyle("""
-        -fx-font-family: "Comic Sans MS";
-        -fx-font-size: 18px;
-        -fx-min-width: 200px;
-        -fx-min-height: 40px;
-        -fx-background-color: #FF7F7F;
-        -fx-text-fill: white;
-        -fx-background-radius: 999px;
-        -fx-border-radius: 999px;
-    """);
+            -fx-font-family: "Comic Sans MS";
+            -fx-font-size: 18px;
+            -fx-min-width: 200px;
+            -fx-min-height: 40px;
+            -fx-background-color: #FF7F7F;
+            -fx-text-fill: white;
+            -fx-background-radius: 999px;
+            -fx-border-radius: 999px;
+        """);
         return btn;
     }
 
     private VBox createLabeledField(String labelText, Control input) {
         Label label = new Label(labelText);
-        label.setFont(Font.font("Arial", 16));
+        label.setFont(Font.font("Comic Sans MS", 16));
         VBox box = new VBox(5, label, input);
         box.setAlignment(Pos.CENTER_LEFT);
         return box;
